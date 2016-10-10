@@ -1,14 +1,14 @@
 using System;
 using MongoDB.Bson;
-using MongoDB.Bson.Serialization.IdGenerators;
-using MongoDB.Bson.Serialization.Attributes;
+// using MongoDB.Bson.Serialization.IdGenerators;
+// using MongoDB.Bson.Serialization.Attributes;
 
 namespace webapi.Models
 {
     public class GameModel
     {
-        [BsonId(IdGenerator=typeof(StringObjectIdGenerator))]
-        public string id { get; set; }
+        // [BsonId(IdGenerator=typeof(StringObjectIdGenerator))]
+        public ObjectId id { get; set; }
         public int maxPlayers { get; set; }
         public string type { get; set; }
 
@@ -17,6 +17,6 @@ namespace webapi.Models
 
         // public string[] players { get; set; }
 
-        // public string mId { get {return _id.ToString();} }
+        public string myId { get {return id.ToString();} }
     }
 }

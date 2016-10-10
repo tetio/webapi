@@ -31,10 +31,7 @@ namespace webapi.Repositories
         }
         public GameModel Get(string id)
         {
-            return this.collection.Find(x => x.id == id).FirstAsync().Result;
-            // return this.collection.Find(x => x._id == new ObjectId(id)).FirstAsync().Result;
-            // return this.collection.Find(x => x._id == new Guid(id)).FirstAsync().Result;
-
+            return this.collection.Find(x => x.id == new ObjectId(id)).FirstAsync().Result;
         }
 
         public IEnumerable<GameModel> Get()
