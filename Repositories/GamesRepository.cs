@@ -7,30 +7,30 @@ namespace webapi.Repositories
 {
     public class GamesRepository
     {
-        private IDBContext _dbContext;
+        private IDBContext dbContext;
 
         public GamesRepository(IDBContext dbContext)
         {
-            _dbContext = dbContext;
+            this.dbContext = dbContext;
         }
 
         public GameModel InsertGame(GameModel game)
         {
-            var a = this._dbContext.Games.InsertOneAsync(game);
+            var a = this.dbContext.Games.InsertOneAsync(game);
             a.Wait();
             //return this.Get(game._id.ToString());
             return game;
         }
         public GameModel Get(string id)
         {
-            var a =  this._dbContext.Games.FindAsync<GameModel>(x => x.id == new ObjectId(id));
+            var a =  this.dbContext.Games.FindAsync<GameModel>(x => x.id == new ObjectId(id));
             a.Wait();
             return a.Result.SingleOrDefault();
         }
 
         public IEnumerable<GameModel> Get()
         {
-            return this._dbContext.Games.Find(x => true).Limit(3).ToListAsync().Result;
+            return this.dbContext.Games.Find(x => true).Limit(3).ToListAsync().Result;
         }
 
 
