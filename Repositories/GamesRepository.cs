@@ -1,42 +1,36 @@
 using MongoDB.Bson;
 using MongoDB.Driver;
-using MongoDB.Driver.Builders;
 using System.Collections.Generic;
-using MongoDB.Bson.Serialization;
 using webapi.Models;
-using System;
 
 namespace webapi.Repositories
 {
     public class GamesRepository
     {
-        protected static IMongoClient client;
-        protected static IMongoDatabase db;
-        protected IMongoCollection<GameModel> collection;
+        private IDBContext _dbContext;
 
-        public GamesRepository()
+        public GamesRepository(IDBContext dbContext)
         {
-            var env = Environment.GetEnvironmentVariable("NODE_ENV");
-            Console.WriteLine("NODE_ENV:   " + env);
-            client = new MongoClient();
-            db = client.GetDatabase("lw");
-            collection = db.GetCollection<GameModel>("games");
+            _dbContext = dbContext;
         }
+
         public GameModel InsertGame(GameModel game)
         {
-            var a = this.collection.InsertOneAsync(game);
+            var a = this._dbContext.Games.InsertOneAsync(game);
             a.Wait();
             //return this.Get(game._id.ToString());
             return game;
         }
         public GameModel Get(string id)
         {
-            return this.collection.Find(x => x.id == new ObjectId(id)).FirstAsync().Result;
+            var a =  this._dbContext.Games.FindAsync<GameModel>(x => x.id == new ObjectId(id));
+            a.Wait();
+            return a.Result.SingleOrDefault();
         }
 
         public IEnumerable<GameModel> Get()
         {
-            return collection.Find(x => true).Limit(3).ToListAsync().Result;
+            return this._dbContext.Games.Find(x => true).Limit(3).ToListAsync().Result;
         }
 
 

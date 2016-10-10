@@ -13,8 +13,8 @@ namespace webapi.Controllers
     {
         protected GamesRepository repository;
 
-        public GamesController() {
-            repository = new GamesRepository();
+        public GamesController(IDBContext dbContext) {
+            repository = new GamesRepository(dbContext);
         }
         // GET api/values
         [HttpGet]
