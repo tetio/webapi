@@ -4,6 +4,7 @@ using MongoDB.Driver.Builders;
 using System.Collections.Generic;
 using MongoDB.Bson.Serialization;
 using webapi.Models;
+using System;
 
 namespace webapi.Repositories
 {
@@ -15,6 +16,8 @@ namespace webapi.Repositories
 
         public GamesRepository()
         {
+            var env = Environment.GetEnvironmentVariable("NODE_ENV");
+            Console.WriteLine("NODE_ENV:   " + env);
             client = new MongoClient();
             db = client.GetDatabase("lw");
             collection = db.GetCollection<GameModel>("games");
@@ -28,8 +31,8 @@ namespace webapi.Repositories
         }
         public GameModel Get(string id)
         {
-            // return this.collection.Find(new BsonDocument {{"_id", new ObjectId(id)}}).FirstAsync().Result;
             return this.collection.Find(x => x._id == new ObjectId(id)).FirstAsync().Result;
+            // return this.collection.Find(x => x._id == new Guid(id)).FirstAsync().Result;
 
         }
 
