@@ -26,8 +26,20 @@ namespace webapi.Repositories
             Console.WriteLine("NODE_ENV:   " + env);
 
             // TODO get db connection string for each environment            
-            
-            client = new MongoClient("mongodb://localhost:27017");
+            if (env.Equals(@"development"))
+            {
+                Console.WriteLine("NODE_ENV:   1");
+                client = new MongoClient("mongodb://172.16.19.17:30481");
+            } else if (env.Equals(@"local"))
+            {
+                Console.WriteLine("NODE_ENV:   2");
+                client = new MongoClient("mongodb://localhost:27017");
+            }
+            else
+            {
+                Console.WriteLine("NODE_ENV:   3");
+                client = new MongoClient("mongodb://localhost:27017");
+            }
             database = client.GetDatabase(DATABASE_NAME);
         }
 
