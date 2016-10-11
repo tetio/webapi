@@ -17,45 +17,44 @@ namespace webapi.Controllers
         {
             repository = new GamesRepository(dbContext);
         }
-        // GET api/values
+        // GET api/games
         [HttpGet]
         public IEnumerable<Game> Get()
         {
             return repository.Get();
         }
 
-        // GET api/values/5
+        // GET api/games/open
+        [HttpGet("Open")]
+        public IEnumerable<Game> GetOpenGames()
+        {
+            return repository.GetOpenGames();
+        }
+
+
+        // GET api/games/5
         [HttpGet("{id}")]
         public Game Get(string id)
         {
             return repository.Get(id);
         }
 
-        //POST api/values
+        //POST api/games
         [HttpPost]
         public IActionResult Post([FromBody]string value)
         {
             var game = this.gameGenerate();
             repository.InsertGame(game);
             return new JsonResult(game);
-            //return new ObjectResult(game);§
         }
 
-        // public void Post([FromBody]string value)
-        // {
-        //     var name = new Bogus.DataSets.Name();
-        //     var game = new Game() {owner = name.FirstName(), maxPlayers = 3, type = "TEST"};
-        //     repository.InsertGame(game);
-        // }
-
-
-        // PUT api/values/5
+        // PUT api/games/5
         [HttpPut("{id}")]
         public void Put(int id, [FromBody]string value)
         {
         }
 
-        // DELETE api/values/5
+        // DELETE api/games/5
         [HttpDelete("{id}")]
         public void Delete(int id)
         {
@@ -78,7 +77,7 @@ namespace webapi.Controllers
                 }
                 players.Add(new Player() { username = name.FirstName(), joinedAt = DateTime.UtcNow, movements = movements });
             }
-            return  new Game() { owner = name.FirstName(), maxPlayers = 3, type = "TEST", createdAt = DateTime.UtcNow, players = players };
+            return  new Game() { owner = name.FirstName(), maxPlayers = 3, type = "TEST", createdAt = DateTime.UtcNow, players = players, state = GameStates.Open };
         }
     }
 }

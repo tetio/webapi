@@ -2,6 +2,7 @@ using MongoDB.Bson;
 using MongoDB.Driver;
 using System.Collections.Generic;
 using webapi.Models;
+using System;
 
 namespace webapi.Repositories
 {
@@ -33,6 +34,11 @@ namespace webapi.Repositories
             return this.dbContext.Games.Find(x => true).Limit(3).ToListAsync().Result;
         }
 
-
+        public IEnumerable<Game> GetOpenGames()
+        {
+            var fiveMinutesAgo = DateTime.UtcNow.AddMinutes(-5);
+            return this.dbContext.Games.Find(x => x.state == GameStates.Open && x.createdAt >= fiveMinutesAgo).Limit(3).ToListAsync().Result;
+        }
+        
     }
 }
