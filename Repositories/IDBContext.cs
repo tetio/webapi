@@ -6,6 +6,6 @@ namespace webapi.Repositories
     public interface IDBContext
     {
         IMongoClient Client { get; }
-        IMongoCollection<GameModel> Games { get; }
+        IMongoCollection<Game> Games { get; }
     }
 }

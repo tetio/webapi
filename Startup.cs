@@ -27,9 +27,10 @@ namespace webapi
         {
             // Some singleton objects
             services.AddSingleton<IDBContext, DBContext>();
-            
+
             // Add framework services.
-            services.AddMvc().AddJsonOptions(options => {
+            services.AddMvc().AddJsonOptions(options =>
+            {
                 options.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
             });
         }

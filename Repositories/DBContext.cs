@@ -36,9 +36,9 @@ namespace webapi.Repositories
             get { return client; }
         }
 
-        public IMongoCollection<GameModel> Games
+        public IMongoCollection<Game> Games
         {
-            get { return database.GetCollection<GameModel>(GAMES_COLLECTION_NAME); }
+            get { return database.GetCollection<Game>(GAMES_COLLECTION_NAME); }
         }
     }
 }

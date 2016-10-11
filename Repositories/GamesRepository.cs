@@ -14,21 +14,21 @@ namespace webapi.Repositories
             this.dbContext = dbContext;
         }
 
-        public GameModel InsertGame(GameModel game)
+        public Game InsertGame(Game game)
         {
             var a = this.dbContext.Games.InsertOneAsync(game);
             a.Wait();
             //return this.Get(game._id.ToString());
             return game;
         }
-        public GameModel Get(string id)
+        public Game Get(string id)
         {
-            var a =  this.dbContext.Games.FindAsync<GameModel>(x => x.id == new ObjectId(id));
+            var a =  this.dbContext.Games.FindAsync<Game>(x => x.id == new ObjectId(id));
             a.Wait();
             return a.Result.SingleOrDefault();
         }
 
-        public IEnumerable<GameModel> Get()
+        public IEnumerable<Game> Get()
         {
             return this.dbContext.Games.Find(x => true).Limit(3).ToListAsync().Result;
         }

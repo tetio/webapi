@@ -13,38 +13,38 @@ namespace webapi.Controllers
     {
         protected GamesRepository repository;
 
-        public GamesController(IDBContext dbContext) {
+        public GamesController(IDBContext dbContext)
+        {
             repository = new GamesRepository(dbContext);
         }
         // GET api/values
         [HttpGet]
-        public IEnumerable<GameModel> Get()
+        public IEnumerable<Game> Get()
         {
             return repository.Get();
         }
 
         // GET api/values/5
         [HttpGet("{id}")]
-        public GameModel Get(string id)
+        public Game Get(string id)
         {
             return repository.Get(id);
         }
 
         //POST api/values
         [HttpPost]
-         public IActionResult Post([FromBody]string value)        
-         {
-             var name = new Bogus.DataSets.Name();
-             var game = new GameModel() {owner = name.FirstName(), maxPlayers = 3, type = "TEST", createdAt = DateTime.UtcNow};
-             repository.InsertGame(game);
-             return new JsonResult(game);
-            //return new ObjectResult(game);
-         }
+        public IActionResult Post([FromBody]string value)
+        {
+            var game = this.gameGenerate();
+            repository.InsertGame(game);
+            return new JsonResult(game);
+            //return new ObjectResult(game);§
+        }
 
         // public void Post([FromBody]string value)
         // {
         //     var name = new Bogus.DataSets.Name();
-        //     var game = new GameModel() {owner = name.FirstName(), maxPlayers = 3, type = "TEST"};
+        //     var game = new Game() {owner = name.FirstName(), maxPlayers = 3, type = "TEST"};
         //     repository.InsertGame(game);
         // }
 
@@ -59,6 +59,26 @@ namespace webapi.Controllers
         [HttpDelete("{id}")]
         public void Delete(int id)
         {
+        }
+
+
+        private Game gameGenerate()
+        {
+            var numPlayers = new Bogus.DataSets.Commerce().Random.Int(1, 3);
+            var numMovements = new Bogus.DataSets.Commerce().Random.Int(1, 5);
+            var name = new Bogus.DataSets.Name();
+            var word = new Bogus.DataSets.Hacker();
+            var players = new List<Player>();
+            for (var i = 0; i < numPlayers; i++)
+            {
+                var movements = new List<Movement>();
+                for (var j = 0; j < numMovements; j++)
+                {
+                    movements.Add(new Movement() { playedAt = DateTime.UtcNow, word = word.Noun() });
+                }
+                players.Add(new Player() { username = name.FirstName(), joinedAt = DateTime.UtcNow, movements = movements });
+            }
+            return  new Game() { owner = name.FirstName(), maxPlayers = 3, type = "TEST", createdAt = DateTime.UtcNow, players = players };
         }
     }
 }
