@@ -1,5 +1,6 @@
 using MongoDB.Bson;
 using MongoDB.Driver;
+using MongoDB.Bson.Serialization;
 using System.Collections.Generic;
 using webapi.Models;
 using System;
@@ -39,6 +40,13 @@ namespace webapi.Repositories
             var fiveMinutesAgo = DateTime.UtcNow.AddMinutes(-5);
             return this.dbContext.Games.Find(x => x.state == GameStates.Open && x.createdAt >= fiveMinutesAgo).Limit(3).ToListAsync().Result;
         }
+
+
+        public List<Game> Filter(string jsonQuery)
+        {
+            var queryDoc = new QueryDocument(BsonSerializer.Deserialize<BsonDocument>(jsonQuery));
+            return this.dbContext.Games.Find<Game>(queryDoc).ToList();
+        }        
         
     }
 }

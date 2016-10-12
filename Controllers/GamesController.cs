@@ -4,6 +4,8 @@ using webapi.Models;
 using webapi.Repositories;
 using Bogus;
 using System;
+using System.IO;
+using System.IO;
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace webapi.Controllers
@@ -48,6 +50,15 @@ namespace webapi.Controllers
             return new JsonResult(game);
         }
 
+        // POST api/games/open
+        [HttpPost("Filter")]
+        public IActionResult Filter(int? id)
+        {
+
+            string jsonData = new StreamReader(Request.Body).ReadToEnd();
+            return new JsonResult(repository.Filter(jsonData));
+        }
+
         // PUT api/games/5
         [HttpPut("{id}")]
         public void Put(int id, [FromBody]string value)
@@ -70,14 +81,16 @@ namespace webapi.Controllers
             var players = new List<Player>();
             for (var i = 0; i < numPlayers; i++)
             {
+                var longitude = new Bogus.DataSets.Address().Longitude();
+                var latitude = new Bogus.DataSets.Address().Latitude();
                 var movements = new List<Movement>();
                 for (var j = 0; j < numMovements; j++)
                 {
                     movements.Add(new Movement() { playedAt = DateTime.UtcNow, word = word.Noun() });
                 }
-                players.Add(new Player() { username = name.FirstName(), joinedAt = DateTime.UtcNow, movements = movements });
+                players.Add(new Player() { username = name.FirstName(), joinedAt = DateTime.UtcNow, movements = movements, longitude = longitude, latitude = latitude });
             }
-            return  new Game() { owner = name.FirstName(), maxPlayers = 3, type = "TEST", createdAt = DateTime.UtcNow, players = players, state = GameStates.Open };
+            return new Game() { owner = name.FirstName(), maxPlayers = 3, type = "TEST", createdAt = DateTime.UtcNow, players = players, state = GameStates.Open };
         }
     }
 }
