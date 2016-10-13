@@ -5,7 +5,7 @@ using webapi.Repositories;
 using Bogus;
 using System;
 using System.IO;
-using System.IO;
+
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace webapi.Controllers
@@ -58,6 +58,18 @@ namespace webapi.Controllers
             string jsonData = new StreamReader(Request.Body).ReadToEnd();
             return new JsonResult(repository.Filter(jsonData));
         }
+
+        // POST api/games/open
+        [HttpPost("Join")]
+        public IActionResult Join(int? id)
+        {
+
+            string jsonPlayer = new StreamReader(Request.Body).ReadToEnd();
+            this.repository.FindCreatedAndBlock(jsonPlayer);
+
+            //return new JsonResult(repository.Filter(jsonData));
+            return null;
+        }        
 
         // PUT api/games/5
         [HttpPut("{id}")]
