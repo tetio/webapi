@@ -45,7 +45,7 @@ namespace webapi.Controllers
         [HttpPost]
         public IActionResult Post([FromBody]string value)
         {
-            var game = this.gameGenerate();
+            var game = repository.gameGenerate();
             repository.InsertGame(game);
             return new JsonResult(game);
         }
@@ -84,25 +84,6 @@ namespace webapi.Controllers
         }
 
 
-        private Game gameGenerate()
-        {
-            var numPlayers = new Bogus.DataSets.Commerce().Random.Int(1, 3);
-            var numMovements = new Bogus.DataSets.Commerce().Random.Int(1, 5);
-            var name = new Bogus.DataSets.Name();
-            var word = new Bogus.DataSets.Hacker();
-            var players = new List<Player>();
-            for (var i = 0; i < numPlayers; i++)
-            {
-                var longitude = new Bogus.DataSets.Address().Longitude();
-                var latitude = new Bogus.DataSets.Address().Latitude();
-                var movements = new List<Movement>();
-                for (var j = 0; j < numMovements; j++)
-                {
-                    movements.Add(new Movement() { playedAt = DateTime.UtcNow, word = word.Noun() });
-                }
-                players.Add(new Player() { username = name.FirstName(), joinedAt = DateTime.UtcNow, movements = movements, longitude = longitude, latitude = latitude });
-            }
-            return new Game() { owner = name.FirstName(), maxPlayers = 3, type = "TEST", createdAt = DateTime.UtcNow, players = players, state = GameStates.Open };
-        }
+
     }
 }
