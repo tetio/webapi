@@ -57,7 +57,7 @@ namespace webapi.Repositories
             if (game != null)
             {
                 game.players.Add(player);
-                games.UpdateOneAsync
+               // TODO games.UpdateOneAsync
             }
             else
             {
