@@ -35,7 +35,7 @@ namespace webapi.Repositories
                     client = new MongoClient("mongodb://localhost:27017");
                     break;
                 default:
-                    client = new MongoClient("mongodb://localhost:27017");
+                    client = new MongoClient("mongodb://172.16.19.17:30481");
                     break;
             }
             database = client.GetDatabase(DATABASE_NAME);
