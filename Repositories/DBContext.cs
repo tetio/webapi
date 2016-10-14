@@ -29,13 +29,13 @@ namespace webapi.Repositories
             switch (env)
             {
                 case "development":
-                    client = new MongoClient("mongodb://172.16.19.17:30481");
+                    client = new MongoClient("mongodb://mongodb-service:27017");
                     break;
                 case "local":
                     client = new MongoClient("mongodb://localhost:27017");
                     break;
                 default:
-                    client = new MongoClient("mongodb://172.16.19.17:30481");
+                    client = new MongoClient("mongodb://mongodb-service:27017");
                     break;
             }
             database = client.GetDatabase(DATABASE_NAME);
