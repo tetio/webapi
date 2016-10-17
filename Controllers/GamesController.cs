@@ -65,10 +65,8 @@ namespace webapi.Controllers
         {
 
             string jsonPlayer = new StreamReader(Request.Body).ReadToEnd();
-            this.repository.FindCreatedAndBlock(jsonPlayer);
-
-            //return new JsonResult(repository.Filter(jsonData));
-            return null;
+            var game = this.repository.FindCreatedAndBlock(jsonPlayer);
+            return new JsonResult(game);
         }        
 
         // PUT api/games/5

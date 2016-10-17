@@ -30,12 +30,15 @@ namespace webapi.Repositories
             {
                 case "development":
                     client = new MongoClient("mongodb://mongodb-service:27017");
+                    Console.WriteLine("**** Estic a :  development");
                     break;
                 case "local":
                     client = new MongoClient("mongodb://localhost:27017");
+                    Console.WriteLine("**** Estic a :  local");
                     break;
                 default:
                     client = new MongoClient("mongodb://mongodb-service:27017");
+                    Console.WriteLine("**** Estic a :  default");
                     break;
             }
             database = client.GetDatabase(DATABASE_NAME);

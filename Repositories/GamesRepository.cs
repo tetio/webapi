@@ -19,9 +19,7 @@ namespace webapi.Repositories
 
         public Game InsertGame(Game game)
         {
-            var a = games.InsertOneAsync(game);
-            a.Wait();
-            //return this.Get(game._id.ToString());
+            games.InsertOneAsync(game).Wait();
             return game;
         }
         public Game Get(string id)
@@ -56,15 +54,19 @@ namespace webapi.Repositories
 
             if (game != null)
             {
-                game.players.Add(player);
-                games.UpdateOneAsync
+                if (game.players.Count >= game.maxPlayers - 1) {
+                    game.state = "READY";
+                } 
+                var update = Builders<Game>.Update
+                .Push("players", player)
+                .Set("state", game.state);
+                games.UpdateOneAsync<Game>(x => x.id == game.id, update).Wait();
+                return game;
             }
             else
             {
                 return this.InsertGame(createNewGame(player));
             }
-
-            return game;
         }
 
 
